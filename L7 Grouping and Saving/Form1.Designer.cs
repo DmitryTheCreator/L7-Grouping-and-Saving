@@ -29,18 +29,25 @@
         private void InitializeComponent()
         {
             this.panelUp = new System.Windows.Forms.Panel();
+            this.pbGroupSelection = new System.Windows.Forms.PictureBox();
+            this.lblGroupSelection = new System.Windows.Forms.Label();
             this.lblColor = new System.Windows.Forms.Label();
             this.pbColor = new System.Windows.Forms.PictureBox();
             this.pbSelection = new System.Windows.Forms.PictureBox();
             this.cmbxShape = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblSelection = new System.Windows.Forms.Label();
             this.btnRemove = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.paneRight = new System.Windows.Forms.Panel();
             this.btnGroup = new System.Windows.Forms.Button();
             this.colorShape = new System.Windows.Forms.ColorDialog();
             this.colorBorder = new System.Windows.Forms.ColorDialog();
+            this.colorGroupBorder = new System.Windows.Forms.ColorDialog();
+            this.btnUnGroup = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnLoad = new System.Windows.Forms.Button();
             this.panelUp.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbGroupSelection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbColor)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSelection)).BeginInit();
             this.paneRight.SuspendLayout();
@@ -50,16 +57,39 @@
             // 
             this.panelUp.BackColor = System.Drawing.Color.Silver;
             this.panelUp.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panelUp.Controls.Add(this.pbGroupSelection);
+            this.panelUp.Controls.Add(this.lblGroupSelection);
             this.panelUp.Controls.Add(this.lblColor);
             this.panelUp.Controls.Add(this.pbColor);
             this.panelUp.Controls.Add(this.pbSelection);
             this.panelUp.Controls.Add(this.cmbxShape);
-            this.panelUp.Controls.Add(this.label1);
+            this.panelUp.Controls.Add(this.lblSelection);
             this.panelUp.Dock = System.Windows.Forms.DockStyle.Top;
             this.panelUp.Location = new System.Drawing.Point(0, 0);
             this.panelUp.Name = "panelUp";
             this.panelUp.Size = new System.Drawing.Size(1114, 54);
             this.panelUp.TabIndex = 1;
+            // 
+            // pbGroupSelection
+            // 
+            this.pbGroupSelection.BackColor = System.Drawing.Color.MediumSpringGreen;
+            this.pbGroupSelection.Location = new System.Drawing.Point(787, 16);
+            this.pbGroupSelection.Name = "pbGroupSelection";
+            this.pbGroupSelection.Size = new System.Drawing.Size(30, 30);
+            this.pbGroupSelection.TabIndex = 19;
+            this.pbGroupSelection.TabStop = false;
+            this.pbGroupSelection.Click += new System.EventHandler(this.pbGroupSelection_Click);
+            // 
+            // lblGroupSelection
+            // 
+            this.lblGroupSelection.AutoSize = true;
+            this.lblGroupSelection.BackColor = System.Drawing.Color.Silver;
+            this.lblGroupSelection.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblGroupSelection.Location = new System.Drawing.Point(614, 14);
+            this.lblGroupSelection.Name = "lblGroupSelection";
+            this.lblGroupSelection.Size = new System.Drawing.Size(167, 25);
+            this.lblGroupSelection.TabIndex = 18;
+            this.lblGroupSelection.Text = "Цвет выделения";
             // 
             // lblColor
             // 
@@ -111,22 +141,22 @@
             this.cmbxShape.Text = "Фигура";
             this.cmbxShape.SelectedIndexChanged += new System.EventHandler(this.cmbxShape_SelectedIndexChanged);
             // 
-            // label1
+            // lblSelection
             // 
-            this.label1.AutoSize = true;
-            this.label1.BackColor = System.Drawing.Color.Silver;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.label1.Location = new System.Drawing.Point(388, 14);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(167, 25);
-            this.label1.TabIndex = 16;
-            this.label1.Text = "Цвет выделения";
+            this.lblSelection.AutoSize = true;
+            this.lblSelection.BackColor = System.Drawing.Color.Silver;
+            this.lblSelection.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblSelection.Location = new System.Drawing.Point(388, 14);
+            this.lblSelection.Name = "lblSelection";
+            this.lblSelection.Size = new System.Drawing.Size(167, 25);
+            this.lblSelection.TabIndex = 16;
+            this.lblSelection.Text = "Цвет выделения";
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(6, 123);
+            this.btnRemove.Location = new System.Drawing.Point(3, 81);
             this.btnRemove.Name = "btnRemove";
-            this.btnRemove.Size = new System.Drawing.Size(160, 100);
+            this.btnRemove.Size = new System.Drawing.Size(160, 75);
             this.btnRemove.TabIndex = 19;
             this.btnRemove.Text = "Удалить";
             this.btnRemove.UseVisualStyleBackColor = true;
@@ -134,9 +164,9 @@
             // 
             // btnClear
             // 
-            this.btnClear.Location = new System.Drawing.Point(3, 17);
+            this.btnClear.Location = new System.Drawing.Point(3, 0);
             this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(160, 100);
+            this.btnClear.Size = new System.Drawing.Size(160, 75);
             this.btnClear.TabIndex = 18;
             this.btnClear.Text = "Очистить";
             this.btnClear.UseVisualStyleBackColor = true;
@@ -145,6 +175,9 @@
             // paneRight
             // 
             this.paneRight.BackColor = System.Drawing.Color.Silver;
+            this.paneRight.Controls.Add(this.btnLoad);
+            this.paneRight.Controls.Add(this.btnSave);
+            this.paneRight.Controls.Add(this.btnUnGroup);
             this.paneRight.Controls.Add(this.btnGroup);
             this.paneRight.Controls.Add(this.btnRemove);
             this.paneRight.Controls.Add(this.btnClear);
@@ -156,13 +189,43 @@
             // 
             // btnGroup
             // 
-            this.btnGroup.Location = new System.Drawing.Point(3, 229);
+            this.btnGroup.Location = new System.Drawing.Point(3, 162);
             this.btnGroup.Name = "btnGroup";
-            this.btnGroup.Size = new System.Drawing.Size(160, 100);
+            this.btnGroup.Size = new System.Drawing.Size(160, 75);
             this.btnGroup.TabIndex = 20;
             this.btnGroup.Text = "Сгруппировать";
             this.btnGroup.UseVisualStyleBackColor = true;
             this.btnGroup.Click += new System.EventHandler(this.btnGroup_Click);
+            // 
+            // btnUnGroup
+            // 
+            this.btnUnGroup.Location = new System.Drawing.Point(3, 243);
+            this.btnUnGroup.Name = "btnUnGroup";
+            this.btnUnGroup.Size = new System.Drawing.Size(160, 75);
+            this.btnUnGroup.TabIndex = 21;
+            this.btnUnGroup.Text = "Разгруппировать";
+            this.btnUnGroup.UseVisualStyleBackColor = true;
+            this.btnUnGroup.Click += new System.EventHandler(this.btnUnGroup_Click);
+            // 
+            // btnSave
+            // 
+            this.btnSave.Location = new System.Drawing.Point(3, 324);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(160, 75);
+            this.btnSave.TabIndex = 22;
+            this.btnSave.Text = "Сохранить";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
+            // 
+            // btnLoad
+            // 
+            this.btnLoad.Location = new System.Drawing.Point(3, 405);
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.Size = new System.Drawing.Size(160, 75);
+            this.btnLoad.TabIndex = 23;
+            this.btnLoad.Text = "Загрузить";
+            this.btnLoad.UseVisualStyleBackColor = true;
+            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
             // Form1
             // 
@@ -178,6 +241,7 @@
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.Form1_MouseDown);
             this.panelUp.ResumeLayout(false);
             this.panelUp.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbGroupSelection)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbColor)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSelection)).EndInit();
             this.paneRight.ResumeLayout(false);
@@ -194,11 +258,17 @@
         private System.Windows.Forms.Label lblColor;
         private System.Windows.Forms.PictureBox pbColor;
         private System.Windows.Forms.ComboBox cmbxShape;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblSelection;
         private System.Windows.Forms.Panel paneRight;
         private System.Windows.Forms.ColorDialog colorShape;
         private System.Windows.Forms.ColorDialog colorBorder;
         private System.Windows.Forms.Button btnGroup;
+        private System.Windows.Forms.PictureBox pbGroupSelection;
+        private System.Windows.Forms.Label lblGroupSelection;
+        private System.Windows.Forms.ColorDialog colorGroupBorder;
+        private System.Windows.Forms.Button btnUnGroup;
+        private System.Windows.Forms.Button btnLoad;
+        private System.Windows.Forms.Button btnSave;
     }
 }
 
