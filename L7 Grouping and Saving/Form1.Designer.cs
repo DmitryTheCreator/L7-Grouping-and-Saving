@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Узел0");
             this.panelUp = new System.Windows.Forms.Panel();
             this.pbGroupSelection = new System.Windows.Forms.PictureBox();
             this.lblGroupSelection = new System.Windows.Forms.Label();
@@ -46,6 +47,7 @@
             this.colorShape = new System.Windows.Forms.ColorDialog();
             this.colorBorder = new System.Windows.Forms.ColorDialog();
             this.colorGroupBorder = new System.Windows.Forms.ColorDialog();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             this.panelUp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbGroupSelection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbColor)).BeginInit();
@@ -175,6 +177,7 @@
             // paneRight
             // 
             this.paneRight.BackColor = System.Drawing.Color.Silver;
+            this.paneRight.Controls.Add(this.treeView1);
             this.paneRight.Controls.Add(this.btnLoad);
             this.paneRight.Controls.Add(this.btnSave);
             this.paneRight.Controls.Add(this.btnUnGroup);
@@ -182,9 +185,9 @@
             this.paneRight.Controls.Add(this.btnRemove);
             this.paneRight.Controls.Add(this.btnClear);
             this.paneRight.Dock = System.Windows.Forms.DockStyle.Right;
-            this.paneRight.Location = new System.Drawing.Point(948, 54);
+            this.paneRight.Location = new System.Drawing.Point(741, 54);
             this.paneRight.Name = "paneRight";
-            this.paneRight.Size = new System.Drawing.Size(166, 542);
+            this.paneRight.Size = new System.Drawing.Size(373, 542);
             this.paneRight.TabIndex = 2;
             // 
             // btnLoad
@@ -226,6 +229,19 @@
             this.btnGroup.Text = "Сгруппировать";
             this.btnGroup.UseVisualStyleBackColor = true;
             this.btnGroup.Click += new System.EventHandler(this.btnGroup_Click);
+            // 
+            // treeView1
+            // 
+            this.treeView1.Location = new System.Drawing.Point(169, 0);
+            this.treeView1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.treeView1.Name = "treeView1";
+            treeNode1.Name = "Узел0";
+            treeNode1.Text = "Узел0";
+            this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode1});
+            this.treeView1.Size = new System.Drawing.Size(201, 480);
+            this.treeView1.TabIndex = 24;
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             // 
             // Form1
             // 
@@ -269,6 +285,7 @@
         private System.Windows.Forms.Button btnUnGroup;
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.TreeView treeView1;
     }
 }
 

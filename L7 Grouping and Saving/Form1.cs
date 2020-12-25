@@ -17,20 +17,46 @@ namespace L7_Grouping_and_Saving
         {
             InitializeComponent();
             storage = new Storage();
+            storage.AddObserver(tree);
             storage.observers += new EventHandler(UpdateFormModel);
         }
 
-        public class Storage // Класс-хранилище фигур
-        {
-            private LinkedList<Figure> storage = new LinkedList<Figure>();
+        TreeViews tree = new TreeViews();
 
+
+        public interface IObservable
+        {   // Наблюдаемый объект
+            void AddObserver(IObserver o);
+            void RemoveObserver(IObserver o);
+            void NotifyObservers();
+        }
+        public interface IObserver
+        {   // Наблюдатель
+            void Update(ref TreeView treeView, Storage stg);
+        }
+        public class Storage : IObservable// Класс-хранилище фигур
+        {
+            public LinkedList<Figure> storage = new LinkedList<Figure>();
+            public TreeView treeView;
+            public List<IObserver> observerss;
             private string status;
             public string Status { set { status = value; } get { return status; } }
             // Добавление фигур в хранилище
             public void add(Figure figure)
             {
                 storage.AddLast(figure);
+                observerss = new List<IObserver>();
                 observers.Invoke(this, null);
+                NotifyObservers();
+            }
+            public void intit_tree(ref TreeView treeView)
+            {
+                this.treeView = treeView;
+            }
+            public void NotifyObservers()
+            {
+                foreach (IObserver observer in observerss)
+                    observer.Update(ref treeView, this);
             }
             public void draw(Form form, SolidBrush cr, Pen br)
             {
@@ -86,6 +112,19 @@ namespace L7_Grouping_and_Saving
                     
                 }
             }
+            public void AddObserver(IObserver o)
+            {
+                observerss.Add(o);
+            }
+            public void RemoveObserver(IObserver o)
+            {
+                observerss.Remove(o);
+            }
+            //public void NotifyObservers()
+            //{
+            //    foreach (IObserver observer in observerss)
+            //        observer.Update(ref treeView, this);
+            //}
             public void load(ref Figure figure, string x, string y, string lenght, string fillcolor)
             {   // Функция загрузки
                 figure.X = Convert.ToInt32(x);
@@ -110,6 +149,7 @@ namespace L7_Grouping_and_Saving
                     }
                 }
                 observers.Invoke(this, null);
+                NotifyObservers();
             }
             public void del(Figure figure)
             {
@@ -287,6 +327,14 @@ namespace L7_Grouping_and_Saving
                     return storage.First();
                 return null;
             }
+
+            //public Storage(int count)
+            //{   // Выделяем count мест в хранилище
+            //    objects = new Figure[count];
+            //    observers = new List<IObserver>();
+            //    for (int i = 0; i < count; ++i)
+            //        objects[i] = null;
+            //}
 
             // Получение следующего элемента хранилища
             public Figure next(Figure figure)
@@ -505,6 +553,7 @@ namespace L7_Grouping_and_Saving
             protected string shape;
             public string Shape { set { shape = value; } get { return shape; } }
 
+           
 
             public virtual Figure first() { return null; }
             public virtual Figure next(Figure figure) { return null; }
@@ -517,8 +566,8 @@ namespace L7_Grouping_and_Saving
         
         public class Group : Figure
         {
-            protected LinkedList<Figure> group = new LinkedList<Figure>();
-
+            public LinkedList<Figure> group = new LinkedList<Figure>();
+            
             public void take(Storage storage)
             {               
                 for (int i = 0; i < storage.count(); ++i)
@@ -588,6 +637,40 @@ namespace L7_Grouping_and_Saving
             }
         }
 
+        class TreeViews : IObserver
+        {
+            public TreeViews() { }
+            public void Update(ref TreeView treeView, Storage storage)
+            {   // Перерисовка treeView
+                treeView.Nodes.Clear();
+                treeView.Nodes.Add("Фигуры");
+                foreach(Figure figure in storage.storage)
+                {
+                    fillnode(treeView.Nodes[0], figure);
+                }
+                
+                treeView.ExpandAll();
+            }
+            public void treeSelect(ref TreeView treeView, int index) //выбор узла
+            {   // Выделяем узел
+                treeView.SelectedNode = treeView.Nodes[0].Nodes[index];
+                treeView.Focus();
+            }
+            public void fillnode(TreeNode treeNode, Figure figure)
+            {   // Заполняем treeView
+                TreeNode nodes = treeNode.Nodes.Add(figure.Shape);
+                if (figure.Shape == "Group")
+                {
+                    for (var fig = figure.first(); fig != null; fig = figure.next(fig))
+                    {
+                        fillnode(nodes, fig);
+                    }
+     
+                }
+                
+            }
+
+        }
 
         public void UpdateFormModel(object sender, EventArgs e) // Обновление модели
         {
@@ -611,6 +694,7 @@ namespace L7_Grouping_and_Saving
                 case MouseButtons.Left:
                     {
                         Figure figure = new Figure();
+                        storage.intit_tree(ref treeView1);
                         figure.X = e.X;
                         figure.Y = e.Y;
                         var size = (FWidth: ClientSize.Width, FHeight: ClientSize.Height, 
@@ -636,6 +720,7 @@ namespace L7_Grouping_and_Saving
                             if (storage.is_inside(e.X, e.Y).IsSelected == false)
                                 storage.is_inside(e.X, e.Y).IsSelected = true;
                             else storage.is_inside(e.X, e.Y).IsSelected = false;
+                            tree.treeSelect(ref treeView1, 1);
                             storage.observers.Invoke(this, null);
                         }
                         else storage.add(figure);
@@ -643,7 +728,17 @@ namespace L7_Grouping_and_Saving
                     }
             }
         }
-         
+
+        public void Update(ref TreeView treeView, Storage stg)
+        {
+            Graphics g = CreateGraphics();
+            g.Clear(BackColor);
+            SolidBrush cr = new SolidBrush(Color.White);
+            Pen br = new Pen(Color.Red, 10);
+            storage.draw(this, cr, br);
+
+        }
+
         private void pbColor_Click(object sender, EventArgs e)
         {
             if (colorShape.ShowDialog() == DialogResult.Cancel)
@@ -760,6 +855,18 @@ namespace L7_Grouping_and_Saving
                 }
                 sr.Close();
             }
+        }
+
+        private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            //remove_selection_circle(ref storag);
+            int g;
+            if (e.Node.Level != 1)
+                g = e.Node.Parent.Index;
+            else
+                g = e.Node.Index;
+            //paint_figure(Color.Red, 4, g);
+            storage.observers.Invoke(this, null);
         }
     }
 }

@@ -7,3 +7,12 @@ C:\Users\ПК\OneDrive\Документы\ООП\Лабы\L7 Grouping and Saving
 C:\Users\ПК\OneDrive\Документы\ООП\Лабы\L7 Grouping and Saving\L7 Grouping and Saving\obj\Debug\L7 Grouping and Saving.csproj.GenerateResource.cache
 C:\Users\ПК\OneDrive\Документы\ООП\Лабы\L7 Grouping and Saving\L7 Grouping and Saving\obj\Debug\L7 Grouping and Saving.exe
 C:\Users\ПК\OneDrive\Документы\ООП\Лабы\L7 Grouping and Saving\L7 Grouping and Saving\obj\Debug\L7 Grouping and Saving.pdb
+C:\Users\ПК\OneDrive\Документы\ООП\Лабы\L8 Objects Tree\L7 Grouping and Saving\bin\Debug\L7 Grouping and Saving.exe.config
+C:\Users\ПК\OneDrive\Документы\ООП\Лабы\L8 Objects Tree\L7 Grouping and Saving\bin\Debug\L7 Grouping and Saving.exe
+C:\Users\ПК\OneDrive\Документы\ООП\Лабы\L8 Objects Tree\L7 Grouping and Saving\bin\Debug\L7 Grouping and Saving.pdb
+C:\Users\ПК\OneDrive\Документы\ООП\Лабы\L8 Objects Tree\L7 Grouping and Saving\obj\Debug\L7 Grouping and Saving.csprojAssemblyReference.cache
+C:\Users\ПК\OneDrive\Документы\ООП\Лабы\L8 Objects Tree\L7 Grouping and Saving\obj\Debug\L7_Grouping_and_Saving.Form1.resources
+C:\Users\ПК\OneDrive\Документы\ООП\Лабы\L8 Objects Tree\L7 Grouping and Saving\obj\Debug\L7_Grouping_and_Saving.Properties.Resources.resources
+C:\Users\ПК\OneDrive\Документы\ООП\Лабы\L8 Objects Tree\L7 Grouping and Saving\obj\Debug\L7 Grouping and Saving.csproj.GenerateResource.cache
+C:\Users\ПК\OneDrive\Документы\ООП\Лабы\L8 Objects Tree\L7 Grouping and Saving\obj\Debug\L7 Grouping and Saving.exe
+C:\Users\ПК\OneDrive\Документы\ООП\Лабы\L8 Objects Tree\L7 Grouping and Saving\obj\Debug\L7 Grouping and Saving.pdb
