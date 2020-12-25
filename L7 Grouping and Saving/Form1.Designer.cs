@@ -39,13 +39,13 @@
             this.btnRemove = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.paneRight = new System.Windows.Forms.Panel();
+            this.btnLoad = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
+            this.btnUnGroup = new System.Windows.Forms.Button();
             this.btnGroup = new System.Windows.Forms.Button();
             this.colorShape = new System.Windows.Forms.ColorDialog();
             this.colorBorder = new System.Windows.Forms.ColorDialog();
             this.colorGroupBorder = new System.Windows.Forms.ColorDialog();
-            this.btnUnGroup = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
-            this.btnLoad = new System.Windows.Forms.Button();
             this.panelUp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbGroupSelection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbColor)).BeginInit();
@@ -73,7 +73,7 @@
             // pbGroupSelection
             // 
             this.pbGroupSelection.BackColor = System.Drawing.Color.MediumSpringGreen;
-            this.pbGroupSelection.Location = new System.Drawing.Point(787, 16);
+            this.pbGroupSelection.Location = new System.Drawing.Point(868, 16);
             this.pbGroupSelection.Name = "pbGroupSelection";
             this.pbGroupSelection.Size = new System.Drawing.Size(30, 30);
             this.pbGroupSelection.TabIndex = 19;
@@ -87,9 +87,9 @@
             this.lblGroupSelection.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lblGroupSelection.Location = new System.Drawing.Point(614, 14);
             this.lblGroupSelection.Name = "lblGroupSelection";
-            this.lblGroupSelection.Size = new System.Drawing.Size(167, 25);
+            this.lblGroupSelection.Size = new System.Drawing.Size(236, 25);
             this.lblGroupSelection.TabIndex = 18;
-            this.lblGroupSelection.Text = "Цвет выделения";
+            this.lblGroupSelection.Text = "Цвет выделения группы";
             // 
             // lblColor
             // 
@@ -187,25 +187,15 @@
             this.paneRight.Size = new System.Drawing.Size(166, 542);
             this.paneRight.TabIndex = 2;
             // 
-            // btnGroup
+            // btnLoad
             // 
-            this.btnGroup.Location = new System.Drawing.Point(3, 162);
-            this.btnGroup.Name = "btnGroup";
-            this.btnGroup.Size = new System.Drawing.Size(160, 75);
-            this.btnGroup.TabIndex = 20;
-            this.btnGroup.Text = "Сгруппировать";
-            this.btnGroup.UseVisualStyleBackColor = true;
-            this.btnGroup.Click += new System.EventHandler(this.btnGroup_Click);
-            // 
-            // btnUnGroup
-            // 
-            this.btnUnGroup.Location = new System.Drawing.Point(3, 243);
-            this.btnUnGroup.Name = "btnUnGroup";
-            this.btnUnGroup.Size = new System.Drawing.Size(160, 75);
-            this.btnUnGroup.TabIndex = 21;
-            this.btnUnGroup.Text = "Разгруппировать";
-            this.btnUnGroup.UseVisualStyleBackColor = true;
-            this.btnUnGroup.Click += new System.EventHandler(this.btnUnGroup_Click);
+            this.btnLoad.Location = new System.Drawing.Point(3, 405);
+            this.btnLoad.Name = "btnLoad";
+            this.btnLoad.Size = new System.Drawing.Size(160, 75);
+            this.btnLoad.TabIndex = 23;
+            this.btnLoad.Text = "Загрузить";
+            this.btnLoad.UseVisualStyleBackColor = true;
+            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
             // 
             // btnSave
             // 
@@ -217,15 +207,25 @@
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
-            // btnLoad
+            // btnUnGroup
             // 
-            this.btnLoad.Location = new System.Drawing.Point(3, 405);
-            this.btnLoad.Name = "btnLoad";
-            this.btnLoad.Size = new System.Drawing.Size(160, 75);
-            this.btnLoad.TabIndex = 23;
-            this.btnLoad.Text = "Загрузить";
-            this.btnLoad.UseVisualStyleBackColor = true;
-            this.btnLoad.Click += new System.EventHandler(this.btnLoad_Click);
+            this.btnUnGroup.Location = new System.Drawing.Point(3, 243);
+            this.btnUnGroup.Name = "btnUnGroup";
+            this.btnUnGroup.Size = new System.Drawing.Size(160, 75);
+            this.btnUnGroup.TabIndex = 21;
+            this.btnUnGroup.Text = "Разгруппировать";
+            this.btnUnGroup.UseVisualStyleBackColor = true;
+            this.btnUnGroup.Click += new System.EventHandler(this.btnUnGroup_Click);
+            // 
+            // btnGroup
+            // 
+            this.btnGroup.Location = new System.Drawing.Point(3, 162);
+            this.btnGroup.Name = "btnGroup";
+            this.btnGroup.Size = new System.Drawing.Size(160, 75);
+            this.btnGroup.TabIndex = 20;
+            this.btnGroup.Text = "Сгруппировать";
+            this.btnGroup.UseVisualStyleBackColor = true;
+            this.btnGroup.Click += new System.EventHandler(this.btnGroup_Click);
             // 
             // Form1
             // 

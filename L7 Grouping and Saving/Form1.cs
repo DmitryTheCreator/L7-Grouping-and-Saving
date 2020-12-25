@@ -70,26 +70,27 @@ namespace L7_Grouping_and_Saving
             }
             public string saveGroup(Figure figure)
             {   // Функция сохранения
-                string str = "Group" + "\n" + "5";
+                string str = "Group" + "\n" + "2";
                 figureSearch6(figure, ref str);
-                //for (int i = 0; i < count; ++i)
-                //    str += "\n" + group[i].save();
                 return str;
             }
-            public void load(ref StreamReader sr, Figure figure, CreateFigure createFigure)
+            public void load(ref StreamReader sr, ref Figure figure, CreateFigure createFigure, Storage storage, Group group)
             {   // Функция загрузки
                 int chislo = Convert.ToInt32(sr.ReadLine());
                 for (int i = 0; i < chislo; ++i)
                 {
-                    createFigure.caseswitch(ref sr, ref figure, createFigure);
-                    add(figure);
+                    createFigure.caseswitch(ref sr, ref figure, createFigure, storage, group);
+                    //group.take(storage);
+                    group.add(figure);
+
+                    
                 }
             }
-            public void load(Figure figure, string x, string y, string lenght, string fillcolor)
+            public void load(ref Figure figure, string x, string y, string lenght, string fillcolor)
             {   // Функция загрузки
                 figure.X = Convert.ToInt32(x);
                 figure.Y = Convert.ToInt32(y);
-                //this.lenght = Convert.ToInt32(lenght);
+                figure.Radius = Convert.ToInt32(lenght);
                 figure.Color = Color.FromArgb(Convert.ToInt32(fillcolor));
             }
             // Удаление фигур из хранилища
@@ -486,7 +487,7 @@ namespace L7_Grouping_and_Saving
             protected Color color;
             public Color Color { set { color = value; } get { return color; } }
 
-            protected Color border;
+            protected Color border = Color.Black;
             public Color Border { set { border = value; } get { return border; } }
 
             protected Color selection;
@@ -510,7 +511,7 @@ namespace L7_Grouping_and_Saving
 
             public virtual void load(string x, string y, string c, string fillcolor) { }
             public virtual void load(ref StreamReader sr, Figure figure, CreateFigure createFigure) { }
-            public virtual void caseswitch(ref StreamReader sr, ref Figure figure, CreateFigure createFigure) { }
+            public virtual void caseswitch(ref StreamReader sr, ref Figure figure, CreateFigure createFigure, Storage storage, Group group) { }
         }
 
         
@@ -534,8 +535,12 @@ namespace L7_Grouping_and_Saving
                         it = storage.next(it);
                     }
                 }             
+            }         
+            public void add(Figure figure)
+            {
+                group.AddLast(figure);
             }
-          
+            public int count() { return group.Count; }
             public override Figure first()
             {
                 if (group.Count != 0)
@@ -558,26 +563,26 @@ namespace L7_Grouping_and_Saving
 
         public class CreateFigure : Figure
         {   // Используем Factory Method
-            public override void caseswitch(ref StreamReader sr, ref Figure figure, CreateFigure createFigure)
+            public override void caseswitch(ref StreamReader sr, ref Figure figure, CreateFigure createFigure, Storage storage, Group group)
             {
                 string str = sr.ReadLine();
                 switch (str)
                 {   // В зависимости какая фигура выбрана
                     case "Circle":
-                        //figure = new Circle();
-                        figure.load(sr.ReadLine(), sr.ReadLine(), sr.ReadLine(), sr.ReadLine());
+                        figure.Shape = "Circle";
+                        storage.load(ref figure, sr.ReadLine(), sr.ReadLine(), sr.ReadLine(), sr.ReadLine());
                         break;
-                    case "Line":
-                        //figure = new Line();
-                        figure.load(sr.ReadLine(), sr.ReadLine(), sr.ReadLine(), sr.ReadLine());
+                    case "Triangle":
+                        figure.Shape = "Triangle";
+                        storage.load(ref figure, sr.ReadLine(), sr.ReadLine(), sr.ReadLine(), sr.ReadLine());
                         break;
                     case "Square":
-                       // figure = new Square();
-                        figure.load(sr.ReadLine(), sr.ReadLine(), sr.ReadLine(), sr.ReadLine());
+                        figure.Shape = "Square";
+                        storage.load(ref figure, sr.ReadLine(), sr.ReadLine(), sr.ReadLine(), sr.ReadLine());
                         break;
                     case "Group":
-                        //figure = new Group();
-                        figure.load(ref sr, figure, createFigure);
+                        figure.Shape = "Group";
+                        storage.load(ref sr, ref figure, createFigure, storage, group);
                         break;
                 }
             }
@@ -731,6 +736,7 @@ namespace L7_Grouping_and_Saving
                     else sw.WriteLine(storage.save(i));
                 }               
             }
+            storage.observers.Invoke(this, null);
         }
 
         private void btnLoad_Click(object sender, EventArgs e)
@@ -742,9 +748,15 @@ namespace L7_Grouping_and_Saving
                 for (int i = 0; i < strend; ++i)
                 {
                     Figure figure = new Figure();
+                    group = new Group();
+                    group.Shape = "Group";
+                    group.Color = pbColor.BackColor;
+                    group.Border = Color.Black;
+                    figure.Selection = pbSelection.BackColor;
                     CreateFigure create = new CreateFigure();
-                    create.caseswitch(ref sr, ref figure, create);
-                    storage.add(figure);
+                    create.caseswitch(ref sr, ref figure, create, storage, group);
+                    if (group.count() != 0) storage.add(group);
+                    else storage.add(figure);
                 }
                 sr.Close();
             }
