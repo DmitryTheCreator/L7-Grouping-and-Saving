@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Узел0");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Узел0");
             this.panelUp = new System.Windows.Forms.Panel();
             this.pbGroupSelection = new System.Windows.Forms.PictureBox();
             this.lblGroupSelection = new System.Windows.Forms.Label();
@@ -40,6 +40,7 @@
             this.btnRemove = new System.Windows.Forms.Button();
             this.btnClear = new System.Windows.Forms.Button();
             this.paneRight = new System.Windows.Forms.Panel();
+            this.treeView1 = new System.Windows.Forms.TreeView();
             this.btnLoad = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.btnUnGroup = new System.Windows.Forms.Button();
@@ -47,7 +48,7 @@
             this.colorShape = new System.Windows.Forms.ColorDialog();
             this.colorBorder = new System.Windows.Forms.ColorDialog();
             this.colorGroupBorder = new System.Windows.Forms.ColorDialog();
-            this.treeView1 = new System.Windows.Forms.TreeView();
+            this.btnAdhesive = new System.Windows.Forms.Button();
             this.panelUp.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbGroupSelection)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbColor)).BeginInit();
@@ -156,7 +157,7 @@
             // 
             // btnRemove
             // 
-            this.btnRemove.Location = new System.Drawing.Point(3, 81);
+            this.btnRemove.Location = new System.Drawing.Point(3, 69);
             this.btnRemove.Name = "btnRemove";
             this.btnRemove.Size = new System.Drawing.Size(160, 75);
             this.btnRemove.TabIndex = 19;
@@ -177,6 +178,7 @@
             // paneRight
             // 
             this.paneRight.BackColor = System.Drawing.Color.Silver;
+            this.paneRight.Controls.Add(this.btnAdhesive);
             this.paneRight.Controls.Add(this.treeView1);
             this.paneRight.Controls.Add(this.btnLoad);
             this.paneRight.Controls.Add(this.btnSave);
@@ -187,12 +189,25 @@
             this.paneRight.Dock = System.Windows.Forms.DockStyle.Right;
             this.paneRight.Location = new System.Drawing.Point(741, 54);
             this.paneRight.Name = "paneRight";
-            this.paneRight.Size = new System.Drawing.Size(373, 542);
+            this.paneRight.Size = new System.Drawing.Size(373, 493);
             this.paneRight.TabIndex = 2;
+            // 
+            // treeView1
+            // 
+            this.treeView1.Location = new System.Drawing.Point(169, 0);
+            this.treeView1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.treeView1.Name = "treeView1";
+            treeNode2.Name = "Узел0";
+            treeNode2.Text = "Узел0";
+            this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
+            treeNode2});
+            this.treeView1.Size = new System.Drawing.Size(201, 491);
+            this.treeView1.TabIndex = 24;
+            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
             // 
             // btnLoad
             // 
-            this.btnLoad.Location = new System.Drawing.Point(3, 405);
+            this.btnLoad.Location = new System.Drawing.Point(3, 345);
             this.btnLoad.Name = "btnLoad";
             this.btnLoad.Size = new System.Drawing.Size(160, 75);
             this.btnLoad.TabIndex = 23;
@@ -202,7 +217,7 @@
             // 
             // btnSave
             // 
-            this.btnSave.Location = new System.Drawing.Point(3, 324);
+            this.btnSave.Location = new System.Drawing.Point(3, 279);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(160, 75);
             this.btnSave.TabIndex = 22;
@@ -212,7 +227,7 @@
             // 
             // btnUnGroup
             // 
-            this.btnUnGroup.Location = new System.Drawing.Point(3, 243);
+            this.btnUnGroup.Location = new System.Drawing.Point(3, 207);
             this.btnUnGroup.Name = "btnUnGroup";
             this.btnUnGroup.Size = new System.Drawing.Size(160, 75);
             this.btnUnGroup.TabIndex = 21;
@@ -222,7 +237,7 @@
             // 
             // btnGroup
             // 
-            this.btnGroup.Location = new System.Drawing.Point(3, 162);
+            this.btnGroup.Location = new System.Drawing.Point(3, 141);
             this.btnGroup.Name = "btnGroup";
             this.btnGroup.Size = new System.Drawing.Size(160, 75);
             this.btnGroup.TabIndex = 20;
@@ -230,24 +245,21 @@
             this.btnGroup.UseVisualStyleBackColor = true;
             this.btnGroup.Click += new System.EventHandler(this.btnGroup_Click);
             // 
-            // treeView1
+            // btnAdhesive
             // 
-            this.treeView1.Location = new System.Drawing.Point(169, 0);
-            this.treeView1.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
-            this.treeView1.Name = "treeView1";
-            treeNode1.Name = "Узел0";
-            treeNode1.Text = "Узел0";
-            this.treeView1.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1});
-            this.treeView1.Size = new System.Drawing.Size(201, 480);
-            this.treeView1.TabIndex = 24;
-            this.treeView1.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeView1_AfterSelect);
+            this.btnAdhesive.Location = new System.Drawing.Point(3, 416);
+            this.btnAdhesive.Name = "btnAdhesive";
+            this.btnAdhesive.Size = new System.Drawing.Size(160, 75);
+            this.btnAdhesive.TabIndex = 24;
+            this.btnAdhesive.Text = "Липкий";
+            this.btnAdhesive.UseVisualStyleBackColor = true;
+            this.btnAdhesive.Click += new System.EventHandler(this.btnAdhesive_Click);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1114, 596);
+            this.ClientSize = new System.Drawing.Size(1114, 547);
             this.Controls.Add(this.paneRight);
             this.Controls.Add(this.panelUp);
             this.KeyPreview = true;
@@ -286,6 +298,7 @@
         private System.Windows.Forms.Button btnLoad;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.TreeView treeView1;
+        private System.Windows.Forms.Button btnAdhesive;
     }
 }
 

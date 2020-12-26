@@ -24,6 +24,8 @@ namespace L7_Grouping_and_Saving
         TreeViews tree = new TreeViews();
 
 
+
+
         public interface IObservable
         {   // Наблюдаемый объект
             void AddObserver(IObserver o);
@@ -32,20 +34,24 @@ namespace L7_Grouping_and_Saving
         }
         public interface IObserver
         {   // Наблюдатель
-            void Update(ref TreeView treeView, Storage stg);
+            void Update(ref TreeView treeView, Storage storage);
         }
         public class Storage : IObservable// Класс-хранилище фигур
         {
             public LinkedList<Figure> storage = new LinkedList<Figure>();
             public TreeView treeView;
             public List<IObserver> observerss;
+            
             private string status;
             public string Status { set { status = value; } get { return status; } }
             // Добавление фигур в хранилище
+            public Storage()
+            {
+                observerss = new List<IObserver>();
+            }
             public void add(Figure figure)
             {
                 storage.AddLast(figure);
-                observerss = new List<IObserver>();
                 observers.Invoke(this, null);
                 NotifyObservers();
             }
@@ -107,9 +113,7 @@ namespace L7_Grouping_and_Saving
                 {
                     createFigure.caseswitch(ref sr, ref figure, createFigure, storage, group);
                     //group.take(storage);
-                    group.add(figure);
-
-                    
+                    group.add(figure);               
                 }
             }
             public void AddObserver(IObserver o)
@@ -120,11 +124,7 @@ namespace L7_Grouping_and_Saving
             {
                 observerss.Remove(o);
             }
-            //public void NotifyObservers()
-            //{
-            //    foreach (IObserver observer in observerss)
-            //        observer.Update(ref treeView, this);
-            //}
+
             public void load(ref Figure figure, string x, string y, string lenght, string fillcolor)
             {   // Функция загрузки
                 figure.X = Convert.ToInt32(x);
@@ -265,8 +265,6 @@ namespace L7_Grouping_and_Saving
                     }
                     else figureSearch3(i, x0, y0, ref check);
                 }
-                //if (ok == true) return it;
-                //return null;
             }
             public void figureSearch4(ref Figure it, int state)
             {   // Отображение группы
@@ -327,14 +325,6 @@ namespace L7_Grouping_and_Saving
                     return storage.First();
                 return null;
             }
-
-            //public Storage(int count)
-            //{   // Выделяем count мест в хранилище
-            //    objects = new Figure[count];
-            //    observers = new List<IObserver>();
-            //    for (int i = 0; i < count; ++i)
-            //        objects[i] = null;
-            //}
 
             // Получение следующего элемента хранилища
             public Figure next(Figure figure)
@@ -402,6 +392,16 @@ namespace L7_Grouping_and_Saving
             }
             // Проверка на выделенность фигуры
             public bool is_selected()
+            {
+                foreach (Figure figure in storage)
+                {
+                    if (figure.IsSelected == true)
+                        return true;
+                }
+                return false;
+            }
+
+            public bool is_adhesive()
             {
                 foreach (Figure figure in storage)
                 {
@@ -643,7 +643,7 @@ namespace L7_Grouping_and_Saving
             public void Update(ref TreeView treeView, Storage storage)
             {   // Перерисовка treeView
                 treeView.Nodes.Clear();
-                treeView.Nodes.Add("Фигуры");
+                treeView.Nodes.Add("Figures");
                 foreach(Figure figure in storage.storage)
                 {
                     fillnode(treeView.Nodes[0], figure);
@@ -664,17 +664,115 @@ namespace L7_Grouping_and_Saving
                     for (var fig = figure.first(); fig != null; fig = figure.next(fig))
                     {
                         fillnode(nodes, fig);
-                    }
-     
+                    }    
                 }
                 
             }
 
         }
 
+        //class Adhesive : IObserver
+        //{
+        //    public Adhesive() { }
+        //    public bool checkCircle(Storage stg, int i, int j)
+        //    {
+        //        if ((stg.objects[j].x - stg.objects[i].x) * (stg.objects[j].x - stg.objects[i].x) +
+        //            (stg.objects[j].y - stg.objects[i].y) * (stg.objects[j].y - stg.objects[i].y)
+        //            <= (stg.objects[i].rad + stg.objects[j].rad) * (stg.objects[i].rad + stg.objects[j].rad) + 1)
+        //            return true;
+        //        else return false;
+        //    }
+        //    public bool checkLine(Storage stg, int i, int j)
+        //    {
+        //        if (stg.objects[i].x + stg.objects[i].lenght >= stg.objects[j].x - stg.objects[j].lenght
+        //            && stg.objects[i].x - stg.objects[i].lenght <= stg.objects[j].x + stg.objects[j].lenght
+        //            && stg.objects[i].y >= stg.objects[j].y - 10
+        //            && stg.objects[i].y <= stg.objects[j].y + 10)
+        //            return true;
+        //        else return false;
+        //    }
+        //    public bool checkSquare(Storage stg, int i, int j)
+        //    {
+        //        if (stg.objects[i].x + (stg.objects[i].size / 2) >= stg.objects[j].x - (stg.objects[j].size / 2)
+        //            && stg.objects[i].x - (stg.objects[i].size / 2) <= stg.objects[j].x + (stg.objects[j].size / 2)
+        //            && stg.objects[i].y >= stg.objects[j].y - (stg.objects[j].size)
+        //            && stg.objects[i].y <= stg.objects[j].y + (stg.objects[j].size))
+        //            return true;
+        //        else return false;
+        //    }
+        //    public bool FigureCheck(Storage stg, int i, int j, string b, int d)
+        //    {
+        //        string h;
+        //        if (d == 1)
+        //        {
+        //            h = b;
+        //        }
+        //        else h = stg.objects[j].name();
+        //        switch (h)
+        //        {
+        //            case "Circle":
+        //                if (checkCircle(stg, i, j))
+        //                    return true;
+        //                break;
+
+        //            case "Line":
+        //                if (checkLine(stg, i, j))
+        //                    return true;
+        //                break;
+
+        //            case "Square":
+        //                if (checkSquare(stg, i, j))
+        //                    return true;
+        //                break;
+        //            case "Group":
+        //                (stg.objects[j] as Group).getsize();
+        //                if (stg.objects[i].x <= (stg.objects[j] as Group).max_x && (stg.objects[i].x + (stg.objects[i].rad * 2)) >=
+        //                (stg.objects[j] as Group).min_x &&
+        //                    stg.objects[i].y <= (stg.objects[j] as Group).max_y &&
+        //                    (stg.objects[i].y + (stg.objects[i].rad * 2)) >= (stg.objects[j] as Group).min_y)
+        //                    return true;
+        //                break;
+        //        }
+        //        return false;
+
+        //    }
+        //    public void Update(ref TreeView treeView, Storage stg)
+        //    {
+        //        int p = 0;
+        //        for (int i = 0; i < k; ++i)
+        //        {
+        //            if (!stg.check_empty(i))
+        //            {
+        //                if (stg.objects[i].is_sticky == true)
+        //                {
+        //                    p = i;
+        //                    break;
+        //                }
+        //            }
+        //        }
+        //        for (int i = 0; i < k; ++i)
+        //        {
+        //            if (!stg.check_empty(i))
+        //            {
+        //                if (p == i)
+        //                {
+        //                    continue;
+        //                }
+        //                string f = "";
+        //                if (FigureCheck(stg, p, i, f, 0))
+        //                {
+        //                    stg.objects[i].setcolored(Color.Red);
+        //                }
+        //            }
+        //        }
+        //    }
+        //}
+
+
         public void UpdateFormModel(object sender, EventArgs e) // Обновление модели
         {
             draw();
+            
         }
 
         public void draw() // Рисование объектов
@@ -720,7 +818,15 @@ namespace L7_Grouping_and_Saving
                             if (storage.is_inside(e.X, e.Y).IsSelected == false)
                                 storage.is_inside(e.X, e.Y).IsSelected = true;
                             else storage.is_inside(e.X, e.Y).IsSelected = false;
-                            tree.treeSelect(ref treeView1, 1);
+                            
+                            int ind = 0;
+                            foreach(Figure fig in storage.storage)
+                            {
+                                if(storage.is_inside(figure.X, figure.Y) == fig)
+                                    break;
+                                ind++;
+                            }
+                            tree.treeSelect(ref treeView1, ind);
                             storage.observers.Invoke(this, null);
                         }
                         else storage.add(figure);
@@ -866,7 +972,30 @@ namespace L7_Grouping_and_Saving
             else
                 g = e.Node.Index;
             //paint_figure(Color.Red, 4, g);
+            //storage.observerss.
             storage.observers.Invoke(this, null);
+        }
+
+        private void btnAdhesive_Click(object sender, EventArgs e)
+        {
+            //Adhesive adhesive = new Adhesive();
+            //storage.AddObserver(adhesive);
+            //for (int i = 0; i < k; ++i)
+            //{
+            //    if (!storag.check_empty(i))
+            //    {
+            //        if (storag.objects[i].is_sticky == true)
+            //        {
+            //            storag.objects[i].is_sticky = false;
+            //            break;
+            //        }
+            //        if (storag.objects[i].color == Color.Red)
+            //        {
+            //            storag.objects[i].is_sticky = true;
+            //            break;
+            //        }
+            //    }
+            //}
         }
     }
 }
