@@ -23,9 +23,6 @@ namespace L7_Grouping_and_Saving
 
         TreeViews tree = new TreeViews();
 
-
-
-
         public interface IObservable
         {   // Наблюдаемый объект
             void AddObserver(IObserver o);
@@ -185,6 +182,7 @@ namespace L7_Grouping_and_Saving
                     }   
                 }
                 observers.Invoke(this, null);
+                NotifyObservers();
             }
 
             public void transite(Figure it, int key, bool undo)
@@ -400,15 +398,17 @@ namespace L7_Grouping_and_Saving
                 }
                 return false;
             }
-
-            public bool is_adhesive()
+            public Figure is_adhesive()
             {
                 foreach (Figure figure in storage)
                 {
                     if (figure.IsSelected == true)
-                        return true;
+                    {
+                        figure.IsAdhesive = true;
+                        return figure;
+                    }
                 }
-                return false;
+                return null;
             }
             // Проверка на попадание щелчка мыши в фигуру
             public Figure is_inside(int x0, int y0)
@@ -450,7 +450,7 @@ namespace L7_Grouping_and_Saving
                 return null;
             }
 
-            private bool inside_square(Figure figure, int x0, int y0)
+            public bool inside_square(Figure figure, int x0, int y0)
             {
                 int x1 = figure.X - figure.Radius;
                 int y1 = figure.Y - figure.Radius;
@@ -460,7 +460,7 @@ namespace L7_Grouping_and_Saving
                     return true;
                 return false;
             }
-            private bool inside_triangle(Figure figure, int x0, int y0)
+            public bool inside_triangle(Figure figure, int x0, int y0)
             {
                 int x1 = figure.X;
                 int y1 = figure.Y - figure.Radius;
@@ -475,7 +475,7 @@ namespace L7_Grouping_and_Saving
                     return true;
                 return false;
             }
-            private bool inside_circle(Figure figure, int x0, int y0)
+            public bool inside_circle(Figure figure, int x0, int y0)
             {
                 int sum = Convert.ToInt32(Math.Pow(x0 - figure.X, 2) + Math.Pow(y0 - figure.Y, 2));
                 int rad = Convert.ToInt32(Math.Pow(figure.Radius, 2));
@@ -553,7 +553,9 @@ namespace L7_Grouping_and_Saving
             protected string shape;
             public string Shape { set { shape = value; } get { return shape; } }
 
-           
+            protected bool isAdhesive = false;
+            public bool IsAdhesive { set { isAdhesive = value; } get { return isAdhesive; } }
+
 
             public virtual Figure first() { return null; }
             public virtual Figure next(Figure figure) { return null; }
@@ -665,114 +667,75 @@ namespace L7_Grouping_and_Saving
                     {
                         fillnode(nodes, fig);
                     }    
-                }
-                
+                }                
             }
-
         }
 
-        //class Adhesive : IObserver
-        //{
-        //    public Adhesive() { }
-        //    public bool checkCircle(Storage stg, int i, int j)
-        //    {
-        //        if ((stg.objects[j].x - stg.objects[i].x) * (stg.objects[j].x - stg.objects[i].x) +
-        //            (stg.objects[j].y - stg.objects[i].y) * (stg.objects[j].y - stg.objects[i].y)
-        //            <= (stg.objects[i].rad + stg.objects[j].rad) * (stg.objects[i].rad + stg.objects[j].rad) + 1)
-        //            return true;
-        //        else return false;
-        //    }
-        //    public bool checkLine(Storage stg, int i, int j)
-        //    {
-        //        if (stg.objects[i].x + stg.objects[i].lenght >= stg.objects[j].x - stg.objects[j].lenght
-        //            && stg.objects[i].x - stg.objects[i].lenght <= stg.objects[j].x + stg.objects[j].lenght
-        //            && stg.objects[i].y >= stg.objects[j].y - 10
-        //            && stg.objects[i].y <= stg.objects[j].y + 10)
-        //            return true;
-        //        else return false;
-        //    }
-        //    public bool checkSquare(Storage stg, int i, int j)
-        //    {
-        //        if (stg.objects[i].x + (stg.objects[i].size / 2) >= stg.objects[j].x - (stg.objects[j].size / 2)
-        //            && stg.objects[i].x - (stg.objects[i].size / 2) <= stg.objects[j].x + (stg.objects[j].size / 2)
-        //            && stg.objects[i].y >= stg.objects[j].y - (stg.objects[j].size)
-        //            && stg.objects[i].y <= stg.objects[j].y + (stg.objects[j].size))
-        //            return true;
-        //        else return false;
-        //    }
-        //    public bool FigureCheck(Storage stg, int i, int j, string b, int d)
-        //    {
-        //        string h;
-        //        if (d == 1)
-        //        {
-        //            h = b;
-        //        }
-        //        else h = stg.objects[j].name();
-        //        switch (h)
-        //        {
-        //            case "Circle":
-        //                if (checkCircle(stg, i, j))
-        //                    return true;
-        //                break;
+        class Adhesive : IObserver
+        {
+            public Adhesive() { }
+            public bool checkCircle(Storage stg, Figure one, Figure two)
+            {
+                if (stg.inside_circle(one, two.X, two.Y))
+                    return true;
+                return false;
+            }
+            public bool checkTriangle(Storage stg, Figure one, Figure two)
+            {
+                if (stg.inside_triangle(one, two.X, two.Y))
+                    return true;
+                return false;
 
-        //            case "Line":
-        //                if (checkLine(stg, i, j))
-        //                    return true;
-        //                break;
+            }
+            public bool checkSquare(Storage stg, Figure one, Figure two)
+            {
+                if (stg.inside_square(one, two.X, two.Y))
+                    return true;
+                return false;
+            }
+            public bool FigureCheck(Storage stg, Figure one, Figure two, string b, int d)
+            {
+                switch (two.Shape)
+                {
+                    case "Circle":
+                        if (checkCircle(stg, one, two))
+                            return true;
+                        break;
 
-        //            case "Square":
-        //                if (checkSquare(stg, i, j))
-        //                    return true;
-        //                break;
-        //            case "Group":
-        //                (stg.objects[j] as Group).getsize();
-        //                if (stg.objects[i].x <= (stg.objects[j] as Group).max_x && (stg.objects[i].x + (stg.objects[i].rad * 2)) >=
-        //                (stg.objects[j] as Group).min_x &&
-        //                    stg.objects[i].y <= (stg.objects[j] as Group).max_y &&
-        //                    (stg.objects[i].y + (stg.objects[i].rad * 2)) >= (stg.objects[j] as Group).min_y)
-        //                    return true;
-        //                break;
-        //        }
-        //        return false;
+                    case "Triangle":
+                        if (checkTriangle(stg, one, two))
+                            return true;
+                        break;
 
-        //    }
-        //    public void Update(ref TreeView treeView, Storage stg)
-        //    {
-        //        int p = 0;
-        //        for (int i = 0; i < k; ++i)
-        //        {
-        //            if (!stg.check_empty(i))
-        //            {
-        //                if (stg.objects[i].is_sticky == true)
-        //                {
-        //                    p = i;
-        //                    break;
-        //                }
-        //            }
-        //        }
-        //        for (int i = 0; i < k; ++i)
-        //        {
-        //            if (!stg.check_empty(i))
-        //            {
-        //                if (p == i)
-        //                {
-        //                    continue;
-        //                }
-        //                string f = "";
-        //                if (FigureCheck(stg, p, i, f, 0))
-        //                {
-        //                    stg.objects[i].setcolored(Color.Red);
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
+                    case "Square":
+                        if (checkSquare(stg, one, two))
+                            return true;
+                        break;
+                }
+                return false;
 
+            }
+            public void Update(ref TreeView treeView, Storage stg)
+            {
+                Figure fi = stg.is_adhesive();
+                foreach (Figure figure in stg.storage)
+                {
+                    if(figure == fi)
+                    {
+                        continue;
+                    }
+                    if(FigureCheck(stg, fi, figure, "", 0))
+                    {
+                        figure.Color = Color.Yellow;
+                        figure.IsSelected = true;
+                    }
+                }
+            }
+        }
 
         public void UpdateFormModel(object sender, EventArgs e) // Обновление модели
         {
-            draw();
-            
+            draw();         
         }
 
         public void draw() // Рисование объектов
@@ -965,37 +928,18 @@ namespace L7_Grouping_and_Saving
 
         private void treeView1_AfterSelect(object sender, TreeViewEventArgs e)
         {
-            //remove_selection_circle(ref storag);
             int g;
             if (e.Node.Level != 1)
                 g = e.Node.Parent.Index;
             else
                 g = e.Node.Index;
-            //paint_figure(Color.Red, 4, g);
-            //storage.observerss.
             storage.observers.Invoke(this, null);
         }
 
         private void btnAdhesive_Click(object sender, EventArgs e)
         {
-            //Adhesive adhesive = new Adhesive();
-            //storage.AddObserver(adhesive);
-            //for (int i = 0; i < k; ++i)
-            //{
-            //    if (!storag.check_empty(i))
-            //    {
-            //        if (storag.objects[i].is_sticky == true)
-            //        {
-            //            storag.objects[i].is_sticky = false;
-            //            break;
-            //        }
-            //        if (storag.objects[i].color == Color.Red)
-            //        {
-            //            storag.objects[i].is_sticky = true;
-            //            break;
-            //        }
-            //    }
-            //}
+            Adhesive adhesive = new Adhesive();
+            storage.AddObserver(adhesive);           
         }
     }
 }
